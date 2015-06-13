@@ -1,0 +1,91 @@
+on("chat:message", function(msg) {
+    var d =["j", "a", "b", "c", "d", "e", "f", "g", "h", "i"];
+    rpre="<div data-origindex=\"0\" class=\"diceroll d20\"><div class=\"dicon\"><div class=\"didroll\">"
+        +"<span style=\"color:#000000;\">";
+    rpost="</span></div><div style=\" position: absolute; top: -6px; left: -1px; width: 100%; text-align: center;"
+        +" font-size: 40px; font-family: dicefontd10; color: #CC0000; text-shadow: 0 0 3px #CC0000; opacity: 1;"
+        +" pointer-events: none; z-index: 1;\">0</div></div></div>";
+    gpre="<div data-origindex=\"0\" class=\"diceroll d20\"><div class=\"dicon\"><div class=\"didroll\">"
+        +"<span style=\"color:#000000;\">";
+    gpost="</span></div><div style=\" position: absolute; top: -6px; left: -1px; width: 100%; text-align: center;"
+        +" font-size: 40px; font-family: dicefontd10; color: #00CC00; text-shadow: 0 0 3px #00CC00; opacity: 1;"
+        +" pointer-events: none; z-index: 1;\">0</div></div></div>";
+    if (msg.content.substring(0,7).toUpperCase() == "!EPROLL")
+        {
+            d1 = Math.floor(Math.random() * 10);
+            d2 = Math.floor(Math.random() * 10);
+            mString = msg.content.substr(8);
+            var mParts = mString.split("|");
+            if (mParts[0].toUpperCase() == "CSROLL") {
+                actor = mParts[1];
+                action = mParts[2];
+                var tParts = mParts[3].split("+");
+                t=tParts.length;
+                if (t == 1) {
+                    target = Number(tParts[0])+Number(mParts[4]);
+                }
+                if (t == 4) {
+                    target = Number(tParts[0])+Number(tParts[1])+Number(tParts[2])+Number(tParts[3])+Number(mParts[4]);
+                }
+            } else {
+                actor = msg.who;
+                action = mParts[0];
+                target = mParts[1];
+            }
+            total = d1*10+d2;
+            BGColor = "#FFFFFF;";
+            dpre = gpre;
+            dpost = gpost;
+            if (total > target) {
+                dpre = rpre;
+                dpost = rpost;
+            }
+            if (d1 == d2) {
+                BGColor = "#CCFFCC;";
+            }
+            if ( (total > target) && (d1 == d2) ) {
+                BGColor = "#FFCCCC;";
+            }
+            if (total == 0) {
+                dpre = gpre;
+                dpost = gpost;
+                BGColor = "#CCFFCC;";
+            }
+            if (total == 99) {
+                dpre = rpre;
+                dpost = rpost;
+                BGColor = "#FFCCCC;";
+            }
+            sendChat(msg.who,"<div style=\""
+                +" background-color:#d3e5f5;"
+                +" padding-top: 1em;"
+                +" padding-left: 1em;"
+                +" margin-left: -1em;"
+                +"\"><strong>"
+                +actor +"</strong> rolls <strong>"+action+":</strong><br><br> <span style=\""
+                +" background-color: "
+                +BGColor
+                +" margin-top: -.5em;"
+                +" border: 2px solid black;"
+                +" border-radius: .75em;"
+                +" padding-top: .75em;"
+                +" padding-bottom: .5em;"
+                +" padding-right: .1em;"
+                +"\">"
+                +dpre+d1+dpost+dpre+d2+dpost
+                +"</span> compared to <span style=\""
+                +" background-color: #FFFFFF;"
+                +" border: 2px solid black;"
+                +" border-radius: .6em;"
+                +" padding-top: .5em;"
+                +" padding-bottom: .4em;"
+                +" padding-right: .25em;"
+                +" padding-left: .25em;"
+                +" font-size: 16px;"
+                +"\">"
+                +target
+                +"</span></div>"
+            );
+        }
+    }
+)
