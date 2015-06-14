@@ -56,36 +56,42 @@ on("chat:message", function(msg) {
                 dpost = rpost;
                 BGColor = "#FFCCCC;";
             }
-            sendChat(msg.who,"<div style=\""
-                +" background-color:#d3e5f5;"
-                +" padding-top: 1em;"
-                +" padding-left: 1em;"
-                +" margin-left: -1em;"
-                +"\"><strong>"
-                +actor +"</strong> rolls <strong>"+action+":</strong><br><br> <span style=\""
-                +" background-color: "
-                +BGColor
-                +" margin-top: -.5em;"
-                +" border: 2px solid black;"
-                +" border-radius: .75em;"
-                +" padding-top: .75em;"
-                +" padding-bottom: .5em;"
-                +" padding-right: .1em;"
-                +"\">"
-                +dpre+d1+dpost+dpre+d2+dpost
-                +"</span> compared to <span style=\""
-                +" background-color: #FFFFFF;"
-                +" border: 2px solid black;"
-                +" border-radius: .6em;"
-                +" padding-top: .5em;"
-                +" padding-bottom: .4em;"
-                +" padding-right: .25em;"
-                +" padding-left: .25em;"
-                +" font-size: 16px;"
-                +"\">"
-                +target
-                +"</span></div>"
-            );
+            if ( (Number(target) <1000) && (Number(target) > -1000) ) {
+                sendChat(msg.who,"<div style=\""
+                    +" background-color:#d3e5f5;"
+                    +" padding-top: 1em;"
+                    +" padding-left: 1em;"
+                    +" margin-left: -1em;"
+                    +"\"><strong>"
+                    +actor +"</strong> rolls <strong>"+action+":</strong><br><br> <span style=\""
+                    +" background-color: "
+                    +BGColor
+                    +" margin-top: -.5em;"
+                    +" border: 2px solid black;"
+                    +" border-radius: .75em;"
+                    +" padding-top: .75em;"
+                    +" padding-bottom: .5em;"
+                    +" padding-right: .1em;"
+                    +"\">"
+                    +dpre+d1+dpost+dpre+d2+dpost
+                    +"</span> compared to <span style=\""
+                    +" background-color: #FFFFFF;"
+                    +" border: 2px solid black;"
+                    +" border-radius: .6em;"
+                    +" padding-top: .5em;"
+                    +" padding-bottom: .4em;"
+                    +" padding-right: .25em;"
+                    +" padding-left: .25em;"
+                    +" font-size: 16px;"
+                    +"\">"
+                    +Number(target)
+                    +"</span></div>"
+                );
+            }
+            else {
+                sendChat(msg.who,"/w "+msg.who+" Invalid format:");
+                sendChat(msg.who,"/w "+msg.who+" Command should be !EPROLL &lt;SKILL&gt;|&lt;TARGET&gt;");
+            }
         }
     }
 )
